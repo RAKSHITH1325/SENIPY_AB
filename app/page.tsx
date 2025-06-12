@@ -502,22 +502,22 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
-                name: "Alex Rivera",
-                title: "Lead Developer",
-                image: "/images/team-member-1.jpeg",
-                description: "Passionate about creating accessible technology solutions",
-              },
-              {
-                name: "Jordan Chen",
-                title: "AI Specialist",
-                image: "/images/team-member-2.jpeg",
-                description: "Expert in machine learning and cognitive computing",
-              },
-              {
-                name: "Morgan Blake",
+                name: "Rohan B",
                 title: "UX Designer",
+                image: "/images/team-member-1.jpeg",
+                description: "Passionate about creating accessible and intuitive user experiences",
+              },
+              {
+                name: "Rakshith Ignatius",
+                title: "AI Specialist & PO",
+                image: "/images/team-member-2.jpeg",
+                description: "Expert in machine learning and product strategy for cognitive computing",
+              },
+              {
+                name: "Pavan Kumar",
+                title: "Lead Developer",
                 image: "https://i.pravatar.cc/300?img=3",
-                description: "Focused on creating intuitive user experiences",
+                description: "Focused on building scalable and robust technology solutions",
               },
             ].map((member, index) => (
               <div key={index} className="flex justify-center">
