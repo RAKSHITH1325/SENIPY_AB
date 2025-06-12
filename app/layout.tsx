@@ -1,30 +1,21 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "SENIPY",
+  title: "SENIPY - AI Cognitive Training",
   description: "AI-powered cognitive training platform",
-  generator: "v0.dev",
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
-        <Suspense>
-          {children}
-          <SpeedInsights />
-          <Analytics />
-        </Suspense>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
