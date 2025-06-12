@@ -1,7 +1,16 @@
 "use client"
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
+import dynamic from "next/dynamic"
+
+// Dynamically import analytics components to prevent SSR issues
+const SpeedInsights = dynamic(
+  () => import("@vercel/speed-insights/next").then((mod) => ({ default: mod.SpeedInsights })),
+  { ssr: false },
+)
+
+const Analytics = dynamic(() => import("@vercel/analytics/next").then((mod) => ({ default: mod.Analytics })), {
+  ssr: false,
+})
 
 export function AnalyticsWrapper() {
   return (

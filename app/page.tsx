@@ -1,94 +1,42 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Brain, Zap, Target, Download, ArrowRight, Play, Pause } from "lucide-react"
-import ProfileCard from "./components/ProfileCard"
-
-// Simple AnimatedLogo component
-const AnimatedLogo = () => {
-  return (
-    <div className="relative">
-      <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-pulse">
-        SENIPY
-      </div>
-    </div>
-  )
-}
-
-// Simple RotatingText component
-const RotatingText = () => {
-  const words = ["SENIPY", "COGNITIVE", "TRAINING", "AI-POWERED"]
-  const [currentWord, setCurrentWord] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWord((prev) => (prev + 1) % words.length)
-    }, 2000)
-    return () => clearInterval(interval)
-  }, [])
-
-  return (
-    <span className="inline-block min-w-[200px] text-left">
-      <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">
-        {words[currentWord]}
-      </span>
-    </span>
-  )
-}
-
-// Simple ProfileCard component
-// const ProfileCard = ({ name, role, image }: { name: string; role: string; image: string }) => {
-//   return (
-//     <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-//       <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
-//         {name.charAt(0)}
-//       </div>
-//       <h3 className="font-semibold text-lg">{name}</h3>
-//       <p className="text-gray-600">{role}</p>
-//     </Card>
-//   )
-// }
-
-// Simple game component
-const SimpleGame = ({ title, description }: { title: string; description: string }) => {
-  const [score, setScore] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-
-  return (
-    <Card className="p-6">
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-600 mb-4">{description}</p>
-      <div className="flex items-center justify-between">
-        <span className="text-lg font-bold">Score: {score}</span>
-        <Button
-          onClick={() => {
-            setIsPlaying(!isPlaying)
-            if (!isPlaying) setScore(score + 10)
-          }}
-          variant={isPlaying ? "destructive" : "default"}
-        >
-          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          {isPlaying ? "Pause" : "Play"}
-        </Button>
-      </div>
-    </Card>
-  )
-}
+import { Brain, Zap, Target, Download, ArrowRight, Play, Pause, Menu, X } from "lucide-react"
 
 export default function HomePage() {
   const [email, setEmail] = useState("")
-  const [isSignedIn, setIsSignedIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [authDialog, setAuthDialog] = useState<"signin" | "signup" | null>(null)
-  const [activeGame, setActiveGame] = useState<string | null>(null)
-  const [showOrbDialog, setShowOrbDialog] = useState(false)
-  const [showEmailVerification, setShowEmailVerification] = useState(false)
-  const [userEmail, setUserEmail] = useState("")
+  const [gameScores, setGameScores] = useState<{ [key: string]: number }>({})
+  const [playingGames, setPlayingGames] = useState<{ [key: string]: boolean }>({})
+
+  const handleGameToggle = (gameId: string) => {
+    setPlayingGames((prev) => ({
+      ...prev,
+      [gameId]: !prev[gameId],
+    }))
+
+    if (!playingGames[gameId]) {
+      setGameScores((prev) => ({
+        ...prev,
+        [gameId]: (prev[gameId] || 0) + 10,
+      }))
+    }
+  }
+
+  const handleDownload = () => {
+    const element = document.createElement("a")
+    const file = new Blob(["SENIPY AI Assistant - Thank you for downloading!"], { type: "text/plain" })
+    element.href = URL.createObjectURL(file)
+    element.download = "senipy-mark-1.txt"
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -98,210 +46,498 @@ export default function HomePage() {
     setIsMenuOpen(false)
   }
 
-  const handleAuth = (type: "signin" | "signup", formData: FormData) => {
-    const email = formData.get("email") as string
-    setUserEmail(email)
-
-    if (type === "signin") {
-      // For sign-in, show email verification
-      setShowEmailVerification(true)
-    } else {
-      // For sign-up, you could also add verification or handle differently
-      console.log(`${type} attempted with:`, Object.fromEntries(formData))
-      setAuthDialog(null)
-    }
-  }
-
-  const handleVerificationComplete = () => {
-    setShowEmailVerification(false)
-    setAuthDialog(null)
-    alert("Successfully signed in!")
-  }
-
-  const handleVerificationBack = () => {
-    setShowEmailVerification(false)
-  }
-
-  const handleDownload = () => {
-    // Create a simple download for demo purposes
-    const element = document.createElement("a")
-    const file = new Blob(["SENIPY AI Assistant - Thank you for downloading!"], { type: "text/plain" })
-    element.href = URL.createObjectURL(file)
-    element.download = "senipy-ai.txt"
-    document.body.appendChild(element)
-    element.click()
-    document.body.removeChild(element)
-  }
-
-  const handleAnimationComplete = () => {
-    console.log("BlurText animation completed!")
-  }
-
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Animated Background */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000"></div>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%)
+              `,
+              animation: "meshMove 20s ease-in-out infinite alternate",
+            }}
+          />
+        </div>
+
+        <div
+          className="absolute top-10 left-10 w-20 h-20 border border-blue-400/20 rotate-45 animate-spin"
+          style={{ animationDuration: "20s" }}
+        />
+        <div className="absolute top-1/4 right-1/4 w-16 h-16 border border-purple-400/15 rounded-full animate-pulse" />
+        <div
+          className="absolute bottom-1/3 left-1/4 w-12 h-12 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rotate-12 animate-bounce"
+          style={{ animationDuration: "3s" }}
+        />
+
+        <div className="absolute top-1/6 left-1/5 w-1 h-1 bg-blue-400 rounded-full animate-ping opacity-60" />
+        <div
+          className="absolute top-1/3 right-1/4 w-1 h-1 bg-purple-400 rounded-full animate-ping opacity-40"
+          style={{ animationDelay: "1s" }}
+        />
+        <div
+          className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-ping opacity-50"
+          style={{ animationDelay: "2s" }}
+        />
       </div>
 
+      <style jsx>{`
+        @keyframes meshMove {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          33% { transform: translate(30px, -30px) rotate(120deg); }
+          66% { transform: translate(-20px, 20px) rotate(240deg); }
+          100% { transform: translate(0, 0) rotate(360deg); }
+        }
+      `}</style>
+
       {/* Header */}
-      <header className="relative z-10 p-6">
-        <nav className="flex justify-between items-center max-w-7xl mx-auto">
-          <AnimatedLogo />
-          <div className="flex gap-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">Sign In</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Sign In to SENIPY</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                    />
+      <header className="relative z-50 bg-slate-800/80 backdrop-blur-md border-b border-slate-700">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              SENIPY
+            </div>
+
+            <nav className="hidden md:flex items-center space-x-8">
+              <button
+                onClick={() => scrollToSection("home")}
+                className="text-slate-300 hover:text-white transition-colors"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => scrollToSection("features")}
+                className="text-slate-300 hover:text-white transition-colors"
+              >
+                Features
+              </button>
+              <button
+                onClick={() => scrollToSection("games")}
+                className="text-slate-300 hover:text-white transition-colors"
+              >
+                Games
+              </button>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button className="text-slate-300 hover:text-white transition-colors">Login</button>
+                </DialogTrigger>
+                <DialogContent className="bg-slate-800 border-slate-700">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">Sign In to SENIPY</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="signin-email" className="text-slate-300">
+                        Email
+                      </Label>
+                      <Input
+                        id="signin-email"
+                        type="email"
+                        className="bg-slate-700 border-slate-600 text-white"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="signin-password" className="text-slate-300">
+                        Password
+                      </Label>
+                      <Input
+                        id="signin-password"
+                        type="password"
+                        className="bg-slate-700 border-slate-600 text-white"
+                        placeholder="Enter your password"
+                      />
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                      Sign In
+                    </Button>
                   </div>
-                  <Button className="w-full" onClick={() => setIsSignedIn(true)}>
-                    Sign In
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                    Sign Up
                   </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Sign Up</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Join SENIPY</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input id="signup-email" type="email" placeholder="Enter your email" />
+                </DialogTrigger>
+                <DialogContent className="bg-slate-800 border-slate-700">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">Join SENIPY</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="signup-name" className="text-slate-300">
+                        Full Name
+                      </Label>
+                      <Input
+                        id="signup-name"
+                        className="bg-slate-700 border-slate-600 text-white"
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="signup-email" className="text-slate-300">
+                        Email
+                      </Label>
+                      <Input
+                        id="signup-email"
+                        type="email"
+                        className="bg-slate-700 border-slate-600 text-white"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="signup-password" className="text-slate-300">
+                        Password
+                      </Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        className="bg-slate-700 border-slate-600 text-white"
+                        placeholder="Create a password"
+                      />
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                      Create Account
+                    </Button>
                   </div>
-                  <Button className="w-full">Create Account</Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+                </DialogContent>
+              </Dialog>
+            </nav>
+
+            <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
-        </nav>
+
+          {isMenuOpen && (
+            <nav className="md:hidden mt-4 pb-4 border-t border-slate-700 pt-4">
+              <div className="flex flex-col space-y-4">
+                <button
+                  onClick={() => scrollToSection("home")}
+                  className="text-slate-300 hover:text-white transition-colors text-left"
+                >
+                  Home
+                </button>
+                <button
+                  onClick={() => scrollToSection("features")}
+                  className="text-slate-300 hover:text-white transition-colors text-left"
+                >
+                  Features
+                </button>
+                <button
+                  onClick={() => scrollToSection("games")}
+                  className="text-slate-300 hover:text-white transition-colors text-left"
+                >
+                  Games
+                </button>
+              </div>
+            </nav>
+          )}
+        </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 text-center py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl font-bold mb-6 text-center">
-            Welcome to <RotatingText />
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto text-center">
-            Enhance your cognitive abilities with our AI-powered training platform designed for seniors
-          </p>
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-          >
-            Get Started <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+      <section id="home" className="relative min-h-screen flex items-center">
+        <div className="container mx-auto px-4 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="bg-slate-800/60 backdrop-blur-md rounded-2xl p-8 border border-slate-700">
+                <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">SENIPY AI</h1>
+                <h2 className="text-xl text-slate-300 mb-2">SENIPY</h2>
+                <p className="text-slate-400 italic mb-6">Makers of near Future</p>
+                <p className="text-slate-300 mb-8 leading-relaxed">
+                  A friendly assistant designed to simplify daily tasks and enhance well-being, particularly for seniors
+                  and those seeking an accessible technology experience.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button
+                    onClick={() => scrollToSection("features")}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-lg"
+                  >
+                    Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button
+                    onClick={handleDownload}
+                    variant="outline"
+                    className="border-slate-600 text-slate-300 hover:bg-slate-700 px-8 py-3 text-lg"
+                  >
+                    <Download className="mr-2 h-5 w-5" />
+                    Download
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="w-80 h-80 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-blue-500/30">
+                  <div className="w-32 h-40 bg-gradient-to-br from-green-400 to-green-500 rounded-2xl flex flex-col items-center justify-center relative">
+                    <div className="flex space-x-2 mb-4">
+                      <div className="w-3 h-3 bg-slate-800 rounded-full" />
+                      <div className="w-3 h-3 bg-slate-800 rounded-full" />
+                    </div>
+                    <div className="w-16 h-6 bg-blue-500 rounded-md flex items-center justify-center mb-4">
+                      <div className="flex space-x-1">
+                        <div className="w-1 h-1 bg-white rounded-full" />
+                        <div className="w-1 h-1 bg-white rounded-full" />
+                        <div className="w-1 h-1 bg-white rounded-full" />
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-6 bg-slate-800 rounded-sm" />
+                      <div className="w-3 h-6 bg-slate-800 rounded-sm" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">Key Features</h2>
+      <section id="features" className="py-20 bg-slate-100/10 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">Key Features</h2>
+            <p className="text-slate-300 max-w-2xl mx-auto">
+              Discover how our robot companion enhances daily life with these thoughtfully designed features
+            </p>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center hover:shadow-lg transition-shadow">
-              <Brain className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-              <h3 className="text-xl font-semibold mb-2">Cognitive Training</h3>
-              <p className="text-gray-600">
-                Scientifically designed exercises to improve memory, attention, and processing speed
-              </p>
+            <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 hover:bg-slate-800/80 transition-all duration-300 hover:scale-105">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Brain className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-4">Voice Integration</h3>
+                <p className="text-slate-300">
+                  Control your device with simple voice commands, making navigation effortless even for those with
+                  limited mobility
+                </p>
+              </CardContent>
             </Card>
-            <Card className="p-8 text-center hover:shadow-lg transition-shadow">
-              <Zap className="w-12 h-12 mx-auto mb-4 text-purple-600" />
-              <h3 className="text-xl font-semibold mb-2">AI-Powered</h3>
-              <p className="text-gray-600">Adaptive algorithms that personalize training based on your performance</p>
+
+            <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 hover:bg-slate-800/80 transition-all duration-300 hover:scale-105">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Zap className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-4">Interactive Games</h3>
+                <p className="text-slate-300">
+                  Enjoy engaging games designed to stimulate mental activity, improve cognitive function, and provide
+                  entertainment
+                </p>
+              </CardContent>
             </Card>
-            <Card className="p-8 text-center hover:shadow-lg transition-shadow">
-              <Target className="w-12 h-12 mx-auto mb-4 text-pink-600" />
-              <h3 className="text-xl font-semibold mb-2">Progress Tracking</h3>
-              <p className="text-gray-600">Detailed analytics to monitor your cognitive improvement over time</p>
+
+            <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 hover:bg-slate-800/80 transition-all duration-300 hover:scale-105">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Target className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-4">Voice Shopping</h3>
+                <p className="text-slate-300">
+                  Shop online using voice commands to easily browse and purchase items without the need for complex
+                  navigation
+                </p>
+              </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
       {/* Games Section */}
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">Training Games</h2>
+      <section id="games" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">Interactive Games</h2>
+            <p className="text-slate-300 max-w-2xl mx-auto">
+              Engage your mind with our collection of brain-training games designed specifically for seniors
+            </p>
+          </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <SimpleGame title="Memory Match" description="Test your memory with card matching games" />
-            <SimpleGame title="Word Puzzle" description="Enhance vocabulary and language skills" />
-            <SimpleGame title="Number Challenge" description="Improve numerical reasoning and calculation" />
-            <SimpleGame title="Pattern Recognition" description="Develop visual processing abilities" />
-            <SimpleGame title="Trivia Quiz" description="Challenge your general knowledge" />
-            <SimpleGame title="Brain Teasers" description="Solve puzzles to boost problem-solving skills" />
+            {[
+              { name: "Memory Match", id: "memory", description: "Challenge your memory with card matching" },
+              { name: "Word Puzzle", id: "word", description: "Find words in letter grids" },
+              { name: "Number Challenge", id: "number", description: "Solve mathematical puzzles" },
+              { name: "Pattern Recognition", id: "pattern", description: "Identify and complete patterns" },
+              { name: "Trivia Quiz", id: "trivia", description: "Test your knowledge with fun questions" },
+              { name: "Brain Teasers", id: "brain", description: "Solve logic puzzles and riddles" },
+            ].map((game) => (
+              <Card
+                key={game.id}
+                className="bg-slate-800/60 backdrop-blur-md border-slate-700 hover:bg-slate-800/80 transition-all duration-300"
+              >
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+                    <Brain className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">{game.name}</h3>
+                  <p className="text-slate-300 text-sm mb-4">{game.description}</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-white font-semibold">Score: {gameScores[game.id] || 0}</span>
+                    <Button
+                      onClick={() => handleGameToggle(game.id)}
+                      className={`${
+                        playingGames[game.id]
+                          ? "bg-red-600 hover:bg-red-700"
+                          : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                      }`}
+                    >
+                      {playingGames[game.id] ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                      {playingGames[game.id] ? "Pause" : "Play"}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Download Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6">Download Our App</h2>
-          <p className="text-xl text-gray-600 mb-8">Get the full SENIPY experience on your mobile device</p>
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white">
-            <h3 className="text-2xl font-bold mb-4">SENIPY Mobile</h3>
-            <p className="mb-6">Version: mark-1</p>
-            <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
-              <Download className="mr-2 w-5 h-5" />
-              Download APK
-            </Button>
+      <section className="py-20 bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm border-y border-purple-500/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6 animate-pulse">
+              ✨ SPECIAL RELEASE ✨
+            </div>
+            <h2 className="text-4xl font-bold text-white mb-4">Download SENIPY</h2>
+            <p className="text-slate-300 max-w-2xl mx-auto mb-8">
+              Get our premium mobile application with exclusive features for seniors
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 border-2 border-purple-500/50 hover:border-purple-400/70 transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                        <Download className="h-8 w-8 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-white">SENIPY APK</h3>
+                        <p className="text-purple-300">Version mark-1 • Latest Release</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-green-400 rounded-full" />
+                        <span className="text-slate-300">Enhanced voice recognition</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-green-400 rounded-full" />
+                        <span className="text-slate-300">Offline game modes</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-green-400 rounded-full" />
+                        <span className="text-slate-300">Large text & button options</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-green-400 rounded-full" />
+                        <span className="text-slate-300">Emergency contact features</span>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={handleDownload}
+                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold"
+                    >
+                      <Download className="mr-3 h-5 w-5" />
+                      Download SENIPY APK
+                    </Button>
+
+                    <p className="text-xs text-slate-400 text-center">
+                      Compatible with Android 8.0+ • 45MB download • Free forever
+                    </p>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <div className="relative">
+                      <div className="w-64 h-80 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-3xl border border-purple-500/30 flex items-center justify-center backdrop-blur-sm">
+                        <div className="w-48 h-64 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-600 flex flex-col items-center justify-center relative overflow-hidden">
+                          <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-r from-purple-600 to-pink-600" />
+                          <div className="text-white text-center mt-8">
+                            <div className="text-2xl font-bold mb-2">SENIPY</div>
+                            <div className="text-sm text-slate-300 mb-4">Senior-Friendly AI</div>
+                            <div className="grid grid-cols-3 gap-2 px-4">
+                              {[...Array(9)].map((_, i) => (
+                                <div key={i} className="w-8 h-8 bg-slate-700 rounded-lg" />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Project Builders Section */}
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">Project Builders</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <ProfileCard name="Alex Johnson" role="Lead Developer" image="/images/team-member-1.jpeg" />
-            <ProfileCard name="Sarah Chen" role="AI Researcher" image="/images/team-member-2.jpeg" />
-            <ProfileCard name="Mike Rodriguez" role="UX Designer" image="/images/team-member-3.jpeg" />
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">Project Builders</h2>
+            <p className="text-slate-300 max-w-2xl mx-auto">Meet the talented team behind SENIPY AI</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[
+              { name: "Alex Rivera", title: "Lead Developer", avatar: "AR" },
+              { name: "Jordan Chen", title: "AI Specialist", avatar: "JC" },
+              { name: "Morgan Blake", title: "UX Designer", avatar: "MB" },
+            ].map((member, index) => (
+              <div key={index} className="flex justify-center">
+                <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 p-6 text-center hover:bg-slate-800/80 transition-all duration-300 hover:scale-105 max-w-sm">
+                  <CardContent className="p-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold">
+                      {member.avatar}
+                    </div>
+                    <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
+                    <p className="text-slate-300 mb-4">{member.title}</p>
+                    <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+                      Contact
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <AnimatedLogo />
-          <p className="mt-4 text-gray-400">Empowering seniors through AI-powered cognitive training</p>
-          <div className="mt-8 flex justify-center space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white">
-              Terms of Service
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white">
-              Contact
-            </a>
+      <footer className="bg-slate-900/80 backdrop-blur-md border-t border-slate-700 py-12">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white mb-4">SENIPY</div>
+            <p className="text-slate-400 mb-6">Making technology accessible for everyone</p>
+            <div className="flex justify-center space-x-6">
+              <button className="text-slate-400 hover:text-white transition-colors">Privacy Policy</button>
+              <button className="text-slate-400 hover:text-white transition-colors">Terms of Service</button>
+              <button className="text-slate-400 hover:text-white transition-colors">Contact Us</button>
+            </div>
+            <div className="mt-8 pt-8 border-t border-slate-700">
+              <p className="text-slate-500">© 2024 SENIPY. All rights reserved.</p>
+            </div>
           </div>
-          <p className="mt-8 text-gray-500">© 2024 SENIPY. All rights reserved.</p>
         </div>
       </footer>
     </div>
