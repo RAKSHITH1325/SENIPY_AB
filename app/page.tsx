@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Brain, Zap, Target, Download, ArrowRight, Play, Pause, Menu, X } from "lucide-react"
+import Image from "next/image"
 
 export default function HomePage() {
   const [email, setEmail] = useState("")
@@ -500,21 +501,49 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
-              { name: "Alex Rivera", title: "Lead Developer", avatar: "AR" },
-              { name: "Jordan Chen", title: "AI Specialist", avatar: "JC" },
-              { name: "Morgan Blake", title: "UX Designer", avatar: "MB" },
+              {
+                name: "Alex Rivera",
+                title: "Lead Developer",
+                image: "/images/team-member-1.jpeg",
+                description: "Passionate about creating accessible technology solutions",
+              },
+              {
+                name: "Jordan Chen",
+                title: "AI Specialist",
+                image: "/images/team-member-2.jpeg",
+                description: "Expert in machine learning and cognitive computing",
+              },
+              {
+                name: "Morgan Blake",
+                title: "UX Designer",
+                image: "https://i.pravatar.cc/300?img=3",
+                description: "Focused on creating intuitive user experiences",
+              },
             ].map((member, index) => (
               <div key={index} className="flex justify-center">
-                <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 p-6 text-center hover:bg-slate-800/80 transition-all duration-300 hover:scale-105 max-w-sm">
-                  <CardContent className="p-6">
-                    <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold">
-                      {member.avatar}
+                <Card className="bg-slate-800/60 backdrop-blur-md border-slate-700 text-center hover:bg-slate-800/80 transition-all duration-300 hover:scale-105 max-w-sm overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 w-full">
+                      <Image
+                        src={member.image || "/placeholder.svg"}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
-                    <p className="text-slate-300 mb-4">{member.title}</p>
-                    <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
-                      Contact
-                    </Button>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
+                      <p className="text-purple-300 font-medium mb-3">{member.title}</p>
+                      <p className="text-slate-300 text-sm mb-4">{member.description}</p>
+                      <Button
+                        variant="outline"
+                        className="border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                      >
+                        Contact
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
