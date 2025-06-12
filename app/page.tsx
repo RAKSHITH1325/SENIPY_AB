@@ -79,37 +79,176 @@ export default function SenipyHomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Dynamic Animated Background */}
+      {/* New Dynamic Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Floating orbs */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-gradient-to-r from-purple-400/8 to-pink-400/8 rounded-full blur-lg animate-bounce"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-gradient-to-r from-cyan-400/12 to-blue-400/12 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute top-1/2 right-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/6 to-purple-400/6 rounded-full blur-md animate-bounce"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-gradient-to-r from-green-400/8 to-cyan-400/8 rounded-full blur-lg animate-pulse"></div>
+        {/* Animated Mesh Gradient */}
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%)
+              `,
+              animation: "meshMove 20s ease-in-out infinite alternate",
+            }}
+          />
+        </div>
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-transparent to-purple-900/5 animate-pulse"></div>
+        {/* Floating Geometric Shapes */}
         <div
-          className="absolute inset-0 bg-gradient-to-tl from-cyan-900/3 via-transparent to-pink-900/3 animate-pulse"
+          className="absolute top-10 left-10 w-20 h-20 border border-blue-400/20 rotate-45 animate-spin"
+          style={{ animationDuration: "20s" }}
+        ></div>
+        <div className="absolute top-1/4 right-1/4 w-16 h-16 border border-purple-400/15 rounded-full animate-pulse"></div>
+        <div
+          className="absolute bottom-1/3 left-1/4 w-12 h-12 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rotate-12 animate-bounce"
+          style={{ animationDuration: "3s" }}
+        ></div>
+        <div
+          className="absolute top-1/2 right-1/6 w-8 h-8 border-2 border-pink-400/20 transform rotate-45 animate-pulse"
           style={{ animationDelay: "1s" }}
         ></div>
-
-        {/* Moving particles */}
-        <div className="absolute top-10 left-10 w-1 h-1 bg-blue-300/40 rounded-full animate-ping"></div>
         <div
-          className="absolute top-20 right-20 w-1 h-1 bg-purple-300/40 rounded-full animate-ping"
+          className="absolute bottom-1/4 right-1/3 w-14 h-14 border border-green-400/15 rounded-lg rotate-45 animate-spin"
+          style={{ animationDuration: "15s", animationDelay: "2s" }}
+        ></div>
+
+        {/* Constellation Lines */}
+        <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 1200 800">
+          <defs>
+            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(59, 130, 246, 0.5)" />
+              <stop offset="50%" stopColor="rgba(147, 51, 234, 0.3)" />
+              <stop offset="100%" stopColor="rgba(236, 72, 153, 0.5)" />
+            </linearGradient>
+          </defs>
+
+          <g className="constellation-lines">
+            <line x1="100" y1="100" x2="300" y2="200" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.6">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
+            </line>
+            <line x1="300" y1="200" x2="500" y2="150" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.4">
+              <animate attributeName="opacity" values="0.2;0.7;0.2" dur="5s" repeatCount="indefinite" />
+            </line>
+            <line x1="700" y1="300" x2="900" y2="250" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.5">
+              <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3s" repeatCount="indefinite" />
+            </line>
+            <line x1="200" y1="500" x2="400" y2="600" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.3">
+              <animate attributeName="opacity" values="0.1;0.6;0.1" dur="6s" repeatCount="indefinite" />
+            </line>
+            <line x1="800" y1="500" x2="1000" y2="400" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.4">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="4.5s" repeatCount="indefinite" />
+            </line>
+          </g>
+
+          {/* Constellation Nodes */}
+          <g className="constellation-nodes">
+            <circle cx="100" cy="100" r="2" fill="rgba(59, 130, 246, 0.8)">
+              <animate attributeName="r" values="1;3;1" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="300" cy="200" r="2" fill="rgba(147, 51, 234, 0.8)">
+              <animate attributeName="r" values="1;3;1" dur="4s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="500" cy="150" r="2" fill="rgba(236, 72, 153, 0.8)">
+              <animate attributeName="r" values="1;3;1" dur="3.5s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="700" cy="300" r="2" fill="rgba(59, 130, 246, 0.8)">
+              <animate attributeName="r" values="1;3;1" dur="5s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="900" cy="250" r="2" fill="rgba(147, 51, 234, 0.8)">
+              <animate attributeName="r" values="1;3;1" dur="2.5s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </svg>
+
+        {/* Flowing Wave Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)" />
+                <stop offset="50%" stopColor="rgba(147, 51, 234, 0.6)" />
+                <stop offset="100%" stopColor="rgba(236, 72, 153, 0.8)" />
+              </linearGradient>
+            </defs>
+            <path d="M0,400 Q300,200 600,400 T1200,400 L1200,800 L0,800 Z" fill="url(#waveGradient)" opacity="0.3">
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                values="0,0; 50,20; 0,0"
+                dur="10s"
+                repeatCount="indefinite"
+              />
+            </path>
+            <path d="M0,500 Q400,300 800,500 T1200,500 L1200,800 L0,800 Z" fill="url(#waveGradient)" opacity="0.2">
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                values="0,0; -30,15; 0,0"
+                dur="12s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </svg>
+        </div>
+
+        {/* Glowing Particles */}
+        <div className="absolute top-1/6 left-1/5 w-1 h-1 bg-blue-400 rounded-full animate-ping opacity-60"></div>
+        <div
+          className="absolute top-1/3 right-1/4 w-1 h-1 bg-purple-400 rounded-full animate-ping opacity-40"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-ping opacity-50"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute top-2/3 right-1/5 w-1 h-1 bg-pink-400 rounded-full animate-ping opacity-70"
           style={{ animationDelay: "0.5s" }}
         ></div>
         <div
-          className="absolute bottom-20 left-20 w-1 h-1 bg-cyan-300/40 rounded-full animate-ping"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute bottom-10 right-10 w-1 h-1 bg-pink-300/40 rounded-full animate-ping"
+          className="absolute bottom-1/6 right-1/2 w-1 h-1 bg-green-400 rounded-full animate-ping opacity-45"
           style={{ animationDelay: "1.5s" }}
         ></div>
+
+        {/* Grid Pattern Overlay */}
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: "50px 50px",
+            animation: "gridMove 25s linear infinite",
+          }}
+        />
       </div>
+
+      {/* CSS Animations */}
+      <style jsx>{`
+        @keyframes meshMove {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          33% { transform: translate(30px, -30px) rotate(120deg); }
+          66% { transform: translate(-20px, 20px) rotate(240deg); }
+          100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        @keyframes gridMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+        
+        .constellation-lines line {
+          filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.5));
+        }
+        
+        .constellation-nodes circle {
+          filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.8));
+        }
+      `}</style>
 
       {/* Header */}
       <header className="relative z-50 bg-slate-800/80 backdrop-blur-md border-b border-slate-700">
@@ -596,7 +735,7 @@ export default function SenipyHomePage() {
         </div>
       </section>
 
-      {/* Specaily Download Section */}
+      {/* Download Section */}
       <section className="py-20 bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm border-y border-purple-500/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
