@@ -515,7 +515,7 @@ export default function HomePage() {
                 title: "AI Specialist & PO",
                 image: "/images/team-member-2.jpeg",
                 description: "Expert in machine learning and product strategy for cognitive computing",
-                linkedin: "https://linkedin.com/in/rakshith-ignatius",
+                linkedin: "https://www.linkedin.com/in/ʀᴀᴋꜱʜɪᴛʜ-ɪɢɴᴀᴛɪᴜꜱ-ʀ-4b328524b",
                 github: "https://github.com/rakshith-ai",
                 twitter: "https://twitter.com/rakshith_ai"
               },
@@ -572,4 +572,4 @@ export default function HomePage() {
                             aria-label={`${member.name}'s GitHub`}
                           >
                             <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.3\
+                              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.793-.26.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381\
