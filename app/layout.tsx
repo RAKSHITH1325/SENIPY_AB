@@ -6,8 +6,8 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
+  title: "SENIPY",
+  description: "AI-powered cognitive training platform",
   generator: "v0.dev",
 }
 
