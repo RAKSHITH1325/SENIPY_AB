@@ -79,13 +79,36 @@ export default function SenipyHomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Animated Background Particles */}
+      {/* Dynamic Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-pulse opacity-60"></div>
-        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-purple-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-cyan-400 rounded-full animate-pulse opacity-50"></div>
-        <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-bounce opacity-60"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-green-400 rounded-full animate-pulse opacity-40"></div>
+        {/* Floating orbs */}
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-gradient-to-r from-purple-400/8 to-pink-400/8 rounded-full blur-lg animate-bounce"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-gradient-to-r from-cyan-400/12 to-blue-400/12 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute top-1/2 right-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/6 to-purple-400/6 rounded-full blur-md animate-bounce"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-gradient-to-r from-green-400/8 to-cyan-400/8 rounded-full blur-lg animate-pulse"></div>
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-transparent to-purple-900/5 animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-gradient-to-tl from-cyan-900/3 via-transparent to-pink-900/3 animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+
+        {/* Moving particles */}
+        <div className="absolute top-10 left-10 w-1 h-1 bg-blue-300/40 rounded-full animate-ping"></div>
+        <div
+          className="absolute top-20 right-20 w-1 h-1 bg-purple-300/40 rounded-full animate-ping"
+          style={{ animationDelay: "0.5s" }}
+        ></div>
+        <div
+          className="absolute bottom-20 left-20 w-1 h-1 bg-cyan-300/40 rounded-full animate-ping"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute bottom-10 right-10 w-1 h-1 bg-pink-300/40 rounded-full animate-ping"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
       </div>
 
       {/* Header */}
@@ -403,14 +426,14 @@ export default function SenipyHomePage() {
               delay={120}
               animateBy="words"
               direction="top"
-              className="text-4xl font-bold text-white mb-4"
+              className="text-4xl font-bold text-white mb-4 text-center"
             />
             <BlurText
               text="Discover how our robot companion enhances daily life with these thoughtfully designed features"
               delay={60}
               animateBy="words"
               direction="top"
-              className="text-slate-300 max-w-2xl mx-auto"
+              className="text-slate-300 max-w-2xl mx-auto text-center"
             />
           </div>
 
@@ -468,7 +491,7 @@ export default function SenipyHomePage() {
               delay={100}
               animateBy="words"
               direction="top"
-              className="text-2xl font-bold text-white mb-8"
+              className="text-2xl font-bold text-white mb-8 text-center"
             />
           </div>
 
@@ -581,18 +604,18 @@ export default function SenipyHomePage() {
               ✨ SPECIAL RELEASE ✨
             </div>
             <BlurText
-              text="Download Specaily"
+              text="Download SENIPY"
               delay={120}
               animateBy="words"
               direction="top"
-              className="text-4xl font-bold text-white mb-4"
+              className="text-4xl font-bold text-white mb-4 text-center"
             />
             <BlurText
               text="Get our premium mobile application with exclusive features for seniors"
               delay={80}
               animateBy="words"
               direction="top"
-              className="text-slate-300 max-w-2xl mx-auto mb-8"
+              className="text-slate-300 max-w-2xl mx-auto mb-8 text-center"
             />
           </div>
 
@@ -607,9 +630,9 @@ export default function SenipyHomePage() {
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold text-white">
-                          <ShinyText text="Specaily APK" speed={3} className="hero-shiny" />
+                          <ShinyText text="SENIPY APK" speed={3} className="hero-shiny" />
                         </h3>
-                        <p className="text-purple-300">Version 2.1.0 • Latest Release</p>
+                        <p className="text-purple-300">Version mark-1 • Latest Release</p>
                       </div>
                     </div>
 
@@ -637,7 +660,7 @@ export default function SenipyHomePage() {
                       className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold"
                     >
                       <DownloadIcon className="mr-3 h-5 w-5" />
-                      <ShinyText text="Download Specaily APK" speed={2} className="text-white font-bold" />
+                      <ShinyText text="Download SENIPY APK" speed={2} className="text-white font-bold" />
                     </Button>
 
                     <p className="text-xs text-slate-400 text-center">
@@ -652,7 +675,7 @@ export default function SenipyHomePage() {
                           <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-r from-purple-600 to-pink-600"></div>
                           <div className="text-white text-center mt-8">
                             <div className="text-2xl font-bold mb-2">
-                              <ShinyText text="Specaily" speed={3} className="hero-shiny" />
+                              <ShinyText text="SENIPY" speed={3} className="hero-shiny" />
                             </div>
                             <div className="text-sm text-slate-300 mb-4">Senior-Friendly AI</div>
                             <div className="grid grid-cols-3 gap-2 px-4">
